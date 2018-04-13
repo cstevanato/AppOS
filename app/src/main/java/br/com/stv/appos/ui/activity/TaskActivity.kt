@@ -1,5 +1,6 @@
 package br.com.stv.appos.ui.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -17,6 +18,11 @@ import br.com.stv.appos.ui.adapter.TaskAdapter
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.app_bar_task.*
 import kotlinx.android.synthetic.main.content_task.*
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v4.content.ContextCompat
+import android.graphics.drawable.Drawable
+import br.com.stv.appos.SeparatorDecoration
+
 
 class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -62,6 +68,10 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         tasks.add(Task("CCCCCC", "EEEEEE" ))
 
         rv_tasks.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
+
+        val decoration = SeparatorDecoration(this)
+        rv_tasks.addItemDecoration(decoration)
+
         rv_tasks.adapter = TaskAdapter(tasks)
 
 
