@@ -15,7 +15,7 @@ class SeparatorDecoration(private val context: Context) : RecyclerView.ItemDecor
     private var divider: Drawable
 
     init {
-        divider = context.getResources().getDrawable(R.drawable.line_divider);
+        divider = context.getResources().getDrawable(R.drawable.line_divider, null);
     }
 
     override fun onDrawOver(c: Canvas?, parent: RecyclerView?, state: RecyclerView.State?) {
