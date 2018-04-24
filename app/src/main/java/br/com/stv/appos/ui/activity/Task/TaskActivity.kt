@@ -33,9 +33,6 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_task)
         setSupportActionBar(toolbar)
 
-        Realm.init(this)
-
-
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
