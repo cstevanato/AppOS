@@ -7,10 +7,10 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.AdapterView
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import br.com.stv.appos.R
@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.app_bar_task.*
 import kotlinx.android.synthetic.main.content_task.*
 import br.com.stv.appos.SeparatorDecoration
+import io.realm.Realm
 
 
 class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, TaskContract.View {
@@ -31,6 +32,9 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
         setSupportActionBar(toolbar)
+
+        Realm.init(this)
+
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -46,19 +50,22 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         taskPresenter.loadTask()
     }
-
-
+    private var longClickSelect = -1
     override fun showTasks(taskView: List<Task>) {
         rv_tasks.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         val decoration = SeparatorDecoration(this)
         rv_tasks.addItemDecoration(decoration)
 
-        rv_tasks.adapter = TaskAdapter(taskView)
+        rv_tasks.adapter = TaskAdapter(taskView) {longClickSelect ->
+             this.longClickSelect = longClickSelect
+        }
 
-//        rv_tasks.setOnCreateContextMenuListener { menu, _, _ ->
-//            menu.add(Menu.NONE, 1, Menu.NONE, "Executar")
-//        }
+        rv_tasks.setOnCreateContextMenuListener { menu: ContextMenu , v : View?, menuInfo: ContextMenu.ContextMenuInfo? ->
+            menu.add(Menu.NONE, 1, Menu.NONE, "Executar")
+        }
     }
+
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -112,13 +119,11 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
-//        val itemMenu = item?.itemId
-//
-//        if(itemMenu == 1){
-//            val adapterMenuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-//            val position = adapterMenuInfo.position
-//            Toast.makeText(this,"Teste: " + position.toString(), Toast.LENGTH_LONG)
-//        }
+        val itemMenu = item?.itemId
+
+        if(itemMenu == 1){
+            Toast.makeText(this,"Teste: " + longClickSelect.toString(), Toast.LENGTH_LONG)
+        }
 
         return super.onContextItemSelected(item)
     }
