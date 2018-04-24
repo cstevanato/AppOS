@@ -1,4 +1,4 @@
-package br.com.stv.appos.ui.activity
+package br.com.stv.appos.ui.activity.Task
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,15 +10,22 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.AdapterView
 import android.widget.LinearLayout
+import android.widget.Toast
 import br.com.stv.appos.R
 import br.com.stv.appos.model.Task
 import br.com.stv.appos.ui.adapter.TaskAdapter
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.app_bar_task.*
 import kotlinx.android.synthetic.main.content_task.*
+import br.com.stv.appos.SeparatorDecoration
 
-class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, TaskContract.View {
+    private val taskPresenter : TaskContract.Presenter by lazy {
+        TaskPresenter(this, this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +44,20 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val tasks: MutableList<Task> = mutableListOf()
-        tasks.add(Task("AAAAA", "BBBBB" ))
-        tasks.add(Task("CCCCCC", "EEEEEE" ))
-
-        rv_tasks.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
-        rv_tasks.adapter = TaskAdapter(tasks)
+        taskPresenter.loadTask()
+    }
 
 
+    override fun showTasks(taskView: List<Task>) {
+        rv_tasks.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        val decoration = SeparatorDecoration(this)
+        rv_tasks.addItemDecoration(decoration)
+
+        rv_tasks.adapter = TaskAdapter(taskView)
+
+//        rv_tasks.setOnCreateContextMenuListener { menu, _, _ ->
+//            menu.add(Menu.NONE, 1, Menu.NONE, "Executar")
+//        }
     }
 
     override fun onBackPressed() {
@@ -96,5 +109,17 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+//        val itemMenu = item?.itemId
+//
+//        if(itemMenu == 1){
+//            val adapterMenuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
+//            val position = adapterMenuInfo.position
+//            Toast.makeText(this,"Teste: " + position.toString(), Toast.LENGTH_LONG)
+//        }
+
+        return super.onContextItemSelected(item)
     }
 }
