@@ -8,11 +8,13 @@ interface TaskContract {
 
     interface Presenter : BasePresenter {
         fun loadTask()
+        fun syncTask()
 
     }
 
     interface View: BaseView<Presenter> {
         fun showTasks(taskView: List<Task>)
+        fun notifyReceivedTasks()
     }
 
 

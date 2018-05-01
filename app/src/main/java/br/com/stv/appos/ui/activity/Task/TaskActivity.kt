@@ -21,9 +21,13 @@ import kotlinx.android.synthetic.main.app_bar_task.*
 import kotlinx.android.synthetic.main.content_task.*
 import br.com.stv.appos.SeparatorDecoration
 import io.realm.Realm
+import retrofit2.Retrofit
 
 
 class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, TaskContract.View {
+
+
+
     private val taskPresenter : TaskContract.Presenter by lazy {
         TaskPresenter(this, this)
     }
@@ -33,12 +37,11 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_task)
         setSupportActionBar(toolbar)
 
-        Realm.init(this)
-
-
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+
+
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -65,7 +68,9 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
+    override fun notifyReceivedTasks() {
+        rv_tasks.adapter.notifyDataSetChanged()
+    }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -95,23 +100,23 @@ class TaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_camera -> {
-                // Handle the camera action
+                taskPresenter.syncTask()
             }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
+//            R.id.nav_gallery -> {
+//
+//            }
+//            R.id.nav_slideshow -> {
+//
+//            }
+//            R.id.nav_manage -> {
+//
+//            }
+//            R.id.nav_share -> {
+//
+//            }
+//            R.id.nav_send -> {
+//
+//            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

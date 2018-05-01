@@ -38,41 +38,12 @@ class TaskAdapter(private val tasks: List<Task>, private val delegate: (longClic
                 false
             }
         }
-
     }
 
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-            //, View.OnCreateContextMenuListener
     {
         val title = itemView.tv_title
         val description = itemView.tv_description
         val address = itemView.tv_address
-        //val km = itemView.tv_km
-
-//        init {
-//
-//
-//            itemView.setOnCreateContextMenuListener(this)
-//        }
-//
-//        override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-//            val Edit = menu?.add(Menu.NONE, 1, 1, "Edit")
-//            val Delete = menu?.add(Menu.NONE, 2, 2, "Delete")
-//            Edit?.setOnMenuItemClickListener({
-//
-//
-//
-////                val adapterMenuInfo = it.menuInfo as AdapterView.AdapterContextMenuInfo
-////                val posicaoTransacao = adapterMenuInfo.position
-//                delegate(it.itemId)
-//                true
-//            })
-//            //Delete?.setOnMenuItemClickListener(onEditMenu);
-//        }
-//
-
-
-
     }
 }
